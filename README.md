@@ -140,7 +140,7 @@ i.e.
 
 This will generate all assets and the manifest ready for us to use.
 
-### 4. Include Assets in Publish
+#### 4. Include Assets in Publish
 By adding the `webpack.assets.json` file to the project we automatically include it in the published content.  The generated bundle files are trickier though: they will always have a different name so we can't just add them to the project file.
 
 To get around this we manually add the following `BeforeBuild` target to the `.csproj` file to include any generated `.js` files into the project.
