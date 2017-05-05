@@ -119,8 +119,8 @@ All of the above will work fine in development but at some point we need to push
 To do this we are going to:
 1. Add all generated assets to `.gitignore` to exclude them from source control (including `webpack.assets.json`)
 2. Include `webpack.assets.json` in the project, even though it won't be in source control.  Provided that it _is_ present by the time we publish then it will be included in the published content
-3. Set up a pre-build event (release only) to `npm install --dev` and `webpack -p` to generate our compiled output
-4. ???????????? somehow persuade it to include arbitrary files in the publish
+3. Set up a pre-build event (release only) to `npm install --only=dev` and `webpack -p` to generate our compiled output
+4. Change the `.csproj` to include the generated assets
 
 Steps 1 & 2 are self-explanatory, so let's jump straight to...
 
