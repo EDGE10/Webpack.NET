@@ -7,20 +7,21 @@ using System.Web;
 
 namespace Webpack.NET
 {
-	internal class Webpack
+	internal class Webpack : IWebpack
 	{
 		private Lazy<WebpackAssetsDictionary> _assets;
 
 		public Webpack(WebpackConfig config, HttpServerUtilityBase server)
 		{
-			this.Config = config;
+			if (server == null) throw new ArgumentNullException(nameof(server));
+
+			this.Config = config ?? throw new ArgumentNullException(nameof(config));
 			_assets     = new Lazy<WebpackAssetsDictionary>(() => 
-				WebpackAssetsDictionary.FromFile(
-					server.MapPath(config.AssetManifestPath)));
+				WebpackAssetsDictionary.FromFile(server.MapPath(config.AssetManifestPath)));
 		}
 
 		public WebpackConfig Config { get; private set; }
 
-		internal WebpackAssetsDictionary Assets { get => _assets.Value; }
+		public WebpackAssetsDictionary Assets { get => _assets.Value; }
 	}
 }

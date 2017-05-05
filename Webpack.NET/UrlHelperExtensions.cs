@@ -14,14 +14,18 @@ namespace Webpack.NET
 	{
 		public static string WebpackAsset(this UrlHelper urlHelper, string assetName = "main", string assetType = "js")
 		{
-			var Webpack = urlHelper.RequestContext.HttpContext.ApplicationInstance.GetWebpack();
-			return urlHelper.Content($"{Webpack.Config.AssetOutputPath}/{Webpack.Assets[assetName][assetType]}");
+			if (urlHelper == null) throw new ArgumentNullException(nameof(urlHelper));
+
+			var webpack = urlHelper.RequestContext.HttpContext.Application.GetWebpack();
+			return urlHelper.Content($"{webpack.Config.AssetOutputPath}/{webpack.Assets[assetName][assetType]}");
 		}
 
 		public static string AbsoluteWebpackAsset(this UrlHelper urlHelper, string assetName = "main", string assetType = "js")
 		{
-			var Webpack  = urlHelper.RequestContext.HttpContext.ApplicationInstance.GetWebpack();
-			var relative = urlHelper.Content($"{Webpack.Config.AssetOutputPath}/{Webpack.Assets[assetName][assetType]}");
+			if (urlHelper == null) throw new ArgumentNullException(nameof(urlHelper));
+
+			var webpack  = urlHelper.RequestContext.HttpContext.Application.GetWebpack();
+			var relative = urlHelper.Content($"{webpack.Config.AssetOutputPath}/{webpack.Assets[assetName][assetType]}");
 			return new Uri(urlHelper.RequestContext.HttpContext.Request.Url, relative).ToString();
 		}
 	}

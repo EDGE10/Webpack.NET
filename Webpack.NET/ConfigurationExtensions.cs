@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,29 +10,42 @@ namespace Webpack.NET
 {
 	public static class ConfigurationExtensions
 	{
-
+		[ExcludeFromCodeCoverage]
 		public static void ConfigureWebpack(this HttpApplication application, WebpackConfig config)
 		{
-			application.Application.Lock();
+			if (application == null) throw new ArgumentNullException(nameof(application));
+
+			new HttpApplicationStateWrapper(application.Application)
+				.ConfigureWebpack(new Webpack(config, new HttpServerUtilityWrapper(application.Server)));
+		}
+
+		internal static void ConfigureWebpack(this HttpApplicationStateBase application, IWebpack webpack)
+		{
+			if (application == null) throw new ArgumentNullException(nameof(application));
+			if (webpack     == null) throw new ArgumentNullException(nameof(webpack));
+			
+			application.Lock();
 			try
 			{
-				application.Application[WebpackApplicationKey] = new Webpack(config, new HttpServerUtilityWrapper(application.Server));
+				application[WebpackApplicationKey] = webpack;
 			}
 			finally
 			{
-				application.Application.UnLock();
+				application.UnLock();
 			}
 		}
 
 		internal static string WebpackApplicationKey = "WebpackApplicationKey";
 
-		internal static Webpack GetWebpack(this HttpApplication application)
+		internal static IWebpack GetWebpack(this HttpApplicationStateBase application)
 		{
-			var Webpack = application.Application[WebpackApplicationKey] as Webpack;
-			if (Webpack == null)
+			if (application == null) throw new ArgumentNullException(nameof(application));
+			
+			var webpack = application[WebpackApplicationKey] as IWebpack;
+			if (webpack == null)
 				throw new ApplicationException("Webpack has not been configured.  Have you called HttpApplication.ConfigureWebpack()?");
 
-			return Webpack;
+			return webpack;
 		}
 	}
 }
