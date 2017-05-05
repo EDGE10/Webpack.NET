@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>$title$</title>
+		<authors>Steve Greatrex</authors>
+		<owners>stevegreatrex</owners>
+		<projectUrl>https://github.com/edge10/Webpack.NET</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Integrating webpack into ASP.NET MVC projects.</description>
+		<copyright>Copyright 2017</copyright>
+		<tags>webpack ASP.NET MVC</tags>
+	</metadata>
+</package>
