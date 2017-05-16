@@ -56,10 +56,10 @@ namespace Webpack.NET.Tests
 			_config.AssetManifestPath = "~/scripts/manifest.json";
 			File.WriteAllText(_tempFile, @"{ ""file"": { ""js"": ""file.js"" } }");
 
-			Assert.That(webpack.Assets["file"]["js"], Is.EqualTo("file.js"));
+			Assert.That(webpack.GetAssetUrl("file", "js"), Is.EqualTo("file.js"));
 			_server.Verify(s => s.MapPath(It.IsAny<string>()), Times.Once());
 
-			Assert.That(webpack.Assets["file"]["js"], Is.EqualTo("file.js"));
+			Assert.That(webpack.GetAssetUrl("file", "js"), Is.EqualTo("file.js"));
 			_server.Verify(s => s.MapPath(It.IsAny<string>()), Times.Once());
 		}
 	}

@@ -22,6 +22,9 @@ namespace Webpack.NET
 
 		public WebpackConfig Config { get; private set; }
 
-		public WebpackAssetsDictionary Assets { get => _assets.Value; }
+		public string GetAssetUrl(string assetName, string assetType)
+		{
+			return _assets.Value[assetName][assetType];
+		}
 	}
 }

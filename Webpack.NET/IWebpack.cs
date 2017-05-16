@@ -2,7 +2,8 @@
 {
 	internal interface IWebpack
 	{
-		WebpackAssetsDictionary Assets { get; }
+		string GetAssetUrl(string assetName, string assetType);
+
 		WebpackConfig Config { get; }
 	}
 }
