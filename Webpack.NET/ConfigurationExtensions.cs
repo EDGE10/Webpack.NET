@@ -16,7 +16,7 @@ namespace Webpack.NET
 			if (application == null) throw new ArgumentNullException(nameof(application));
 
 			new HttpApplicationStateWrapper(application.Application)
-				.ConfigureWebpack(new Webpack(config, new HttpServerUtilityWrapper(application.Server)));
+				.ConfigureWebpack(new Webpack(new[] { config }, new HttpServerUtilityWrapper(application.Server)));
 		}
 
 		internal static void ConfigureWebpack(this HttpApplicationStateBase application, IWebpack webpack)
