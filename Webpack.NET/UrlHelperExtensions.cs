@@ -17,7 +17,7 @@ namespace Webpack.NET
 			if (urlHelper == null) throw new ArgumentNullException(nameof(urlHelper));
 
 			var webpack = urlHelper.RequestContext.HttpContext.Application.GetWebpack();
-			return urlHelper.Content($"{webpack.Config.AssetOutputPath}/{webpack.Assets[assetName][assetType]}");
+			return urlHelper.Content(webpack.GetAssetUrl(assetName, assetType));
 		}
 
 		public static string AbsoluteWebpackAsset(this UrlHelper urlHelper, string assetName = "main", string assetType = "js")
@@ -25,7 +25,7 @@ namespace Webpack.NET
 			if (urlHelper == null) throw new ArgumentNullException(nameof(urlHelper));
 
 			var webpack  = urlHelper.RequestContext.HttpContext.Application.GetWebpack();
-			var relative = urlHelper.Content($"{webpack.Config.AssetOutputPath}/{webpack.Assets[assetName][assetType]}");
+			var relative = urlHelper.Content(webpack.GetAssetUrl(assetName, assetType));
 			return new Uri(urlHelper.RequestContext.HttpContext.Request.Url, relative).ToString();
 		}
 	}

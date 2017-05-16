@@ -9,19 +9,36 @@ namespace Webpack.NET
 {
 	internal class Webpack : IWebpack
 	{
-		private Lazy<WebpackAssetsDictionary> _assets;
+		private Lazy<IEnumerable<WebpackAssetsDictionary>> _assets;
 
-		public Webpack(WebpackConfig config, HttpServerUtilityBase server)
+		public Webpack(IEnumerable<WebpackConfig> configs, HttpServerUtilityBase server)
 		{
+			if (configs == null) throw new ArgumentNullException(nameof(configs));
 			if (server == null) throw new ArgumentNullException(nameof(server));
 
-			this.Config = config ?? throw new ArgumentNullException(nameof(config));
-			_assets     = new Lazy<WebpackAssetsDictionary>(() => 
-				WebpackAssetsDictionary.FromFile(server.MapPath(config.AssetManifestPath)));
+			_assets = new Lazy<IEnumerable<WebpackAssetsDictionary>>(() => configs
+				.Select(config => GetAssetDictionaryForConfig(server, config))
+				.ToList());
 		}
 
-		public WebpackConfig Config { get; private set; }
+		private static WebpackAssetsDictionary GetAssetDictionaryForConfig(HttpServerUtilityBase server, WebpackConfig config)
+		{
+			var assets        = WebpackAssetsDictionary.FromFile(server.MapPath(config.AssetManifestPath));
+			assets.RootFolder = config.AssetOutputPath;
+			return assets;
+		}
 
-		public WebpackAssetsDictionary Assets { get => _assets.Value; }
+		public string GetAssetUrl(string assetName, string assetType)
+		{
+			var matchingDictionary = _assets.Value
+				.Where(a => a.ContainsKey(assetName))
+				.FirstOrDefault();
+
+			var noAssetFound = matchingDictionary == null || !matchingDictionary[assetName].ContainsKey(assetType);
+			if (noAssetFound)
+				throw new AssetNotFoundException(assetName, assetType);
+
+			return $"{matchingDictionary.RootFolder}/{matchingDictionary[assetName][assetType]}";
+		}
 	}
 }

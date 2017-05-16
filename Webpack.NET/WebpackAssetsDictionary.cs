@@ -10,6 +10,8 @@ namespace Webpack.NET
 {
 	internal class WebpackAssetsDictionary : Dictionary<string, WebpackAsset>
 	{
+		public string RootFolder { get; set; }
+
 		internal static WebpackAssetsDictionary FromFile(string assetJsonPath)
 		{
 			var serializer = new JsonSerializer();
