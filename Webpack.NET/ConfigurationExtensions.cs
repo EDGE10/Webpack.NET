@@ -11,12 +11,12 @@ namespace Webpack.NET
 	public static class ConfigurationExtensions
 	{
 		[ExcludeFromCodeCoverage]
-		public static void ConfigureWebpack(this HttpApplication application, WebpackConfig config)
+		public static void ConfigureWebpack(this HttpApplication application, params WebpackConfig[] configs)
 		{
 			if (application == null) throw new ArgumentNullException(nameof(application));
 
 			new HttpApplicationStateWrapper(application.Application)
-				.ConfigureWebpack(new Webpack(new[] { config }, new HttpServerUtilityWrapper(application.Server)));
+				.ConfigureWebpack(new Webpack(configs, new HttpServerUtilityWrapper(application.Server)));
 		}
 
 		internal static void ConfigureWebpack(this HttpApplicationStateBase application, IWebpack webpack)
