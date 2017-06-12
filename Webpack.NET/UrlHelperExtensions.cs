@@ -24,9 +24,8 @@ namespace Webpack.NET
 		{
 			if (urlHelper == null) throw new ArgumentNullException(nameof(urlHelper));
 
-			var webpack  = urlHelper.RequestContext.HttpContext.Application.GetWebpack();
-			var relative = urlHelper.Content(webpack.GetAssetUrl(assetName, assetType));
-			return new Uri(urlHelper.RequestContext.HttpContext.Request.Url, relative).ToString();
+			var relative = urlHelper.WebpackAsset(assetName, assetType);
+			return new Uri(urlHelper.RequestContext.HttpContext.Request.Url, relative).AbsoluteUri;
 		}
 	}
 }
