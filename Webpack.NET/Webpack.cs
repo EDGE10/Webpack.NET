@@ -65,10 +65,21 @@ namespace Webpack.NET
                 .Where(a => a.ContainsKey(assetName))
                 .FirstOrDefault();
 
-            var noAssetFound = matchingDictionary == null || !matchingDictionary[assetName].ContainsKey(assetType);
+            string asset = null;
+            var noAssetFound = matchingDictionary == null || !matchingDictionary[assetName].TryGetValue(assetType, out asset);
             if (noAssetFound) throw new AssetNotFoundException(assetName, assetType);
 
-            return $"{matchingDictionary.RootFolder}/{matchingDictionary[assetName][assetType]}";
+            string rootFolder = matchingDictionary.RootFolder;
+            if (String.IsNullOrEmpty(rootFolder) || Uri.IsWellFormedUriString(asset, UriKind.Absolute))
+            {
+                // No root folder set or asset is already an absolute URL
+                return asset;
+            }
+            else
+            {
+                // Combine root folder and asset URL
+                return $"{rootFolder}/{asset}";
+            }
         }
     }
 }
