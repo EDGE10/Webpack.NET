@@ -8,8 +8,8 @@
 		<owners>stevegreatrex</owners>
 		<projectUrl>https://github.com/edge10/Webpack.NET</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>Integrating webpack into ASP.NET MVC projects.</description>
-		<copyright>Copyright 2017</copyright>
-		<tags>webpack ASP.NET MVC</tags>
+		<description>$description$</description>
+		<copyright>$copyright$</copyright>
+		<tags>webpack aspnet mvc</tags>
 	</metadata>
 </package>
