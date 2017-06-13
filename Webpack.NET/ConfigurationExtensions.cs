@@ -62,13 +62,13 @@ namespace Webpack.NET
         /// <returns>
         /// The webpack instance.
         /// </returns>
-        /// <exception cref="System.ApplicationException">Webpack has not been configured, have you called HttpApplication.ConfigureWebpack()?</exception>
+        /// <exception cref="System.InvalidOperationException">Webpack has not been configured, have you called HttpApplication.ConfigureWebpack()?</exception>
         internal static IWebpack GetWebpack(this HttpApplicationStateBase application)
         {
             if (application == null) throw new ArgumentNullException(nameof(application));
 
             var webpack = application[WebpackApplicationKey] as IWebpack;
-            if (webpack == null) throw new ApplicationException("Webpack has not been configured, have you called HttpApplication.ConfigureWebpack()?");
+            if (webpack == null) throw new InvalidOperationException("Webpack has not been configured, have you called HttpApplication.ConfigureWebpack()?");
 
             return webpack;
         }

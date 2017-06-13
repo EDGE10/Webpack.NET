@@ -49,8 +49,9 @@ namespace Webpack.NET.Tests
         public void GetWebpack_Throws_On_Missing_Webpack()
         {
             var application = new Mock<HttpApplicationStateBase>();
-            var error = Assert.Throws<ApplicationException>(() => application.Object.GetWebpack());
-            Assert.That(error.Message, Is.EqualTo("Webpack has not been configured, have you called HttpApplication.ConfigureWebpack()?"));
+            var error = Assert.Throws<InvalidOperationException>(() => application.Object.GetWebpack());
+            // Message could be localized, so do not check
+            //Assert.That(error.Message, Is.EqualTo("Webpack has not been configured, have you called HttpApplication.ConfigureWebpack()?"));
         }
     }
 }
