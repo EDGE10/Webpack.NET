@@ -1,25 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Webpack.NET
+﻿namespace Webpack.NET
 {
 	/// <summary>
-	/// Configuration properties for Webpack integration.
+	/// Configuration properties for webpack integration.
 	/// </summary>
 	public class WebpackConfig
 	{
 		/// <summary>
-		/// Gets or sets the server-relative path to the assets.json file output by https://github.com/kossnocorp/assets-Webpack-plugin
-		/// e.g. "~/scripts/Webpack-assets.json"
+		/// Gets or sets the server-relative path to the JSON file output by https://github.com/kossnocorp/assets-webpack-plugin, eg. "~/scripts/webpack-assets.json"
 		/// </summary>
 		public string AssetManifestPath { get; set; }
 
 		/// <summary>
-		/// Gets or sets the server-relative path to the output of the Webpack assets.
-		/// e.g. "~/scripts"
+		/// Gets or sets the server-relative path to the output of the webpack assets, eg. "~/scripts".
 		/// </summary>
 		public string AssetOutputPath { get; set; }
 	}
