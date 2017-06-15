@@ -70,14 +70,21 @@ namespace Webpack.NET.Tests
         }
 
         [Test]
-        public void GetAssetUrl_Returns_Null_When_No_Configurations_Specified()
+        public void GetAssetUrl_Throws_When_No_Configurations_Specified()
         {
             var webpack = new Webpack(new WebpackConfig[0], _server.Object);
             Assert.Throws<AssetNotFoundException>(() => webpack.GetAssetUrl("any", "any"));
         }
 
         [Test]
-        public void GetAssetUrl_Returns_Null_When_No_Matching_Resource()
+        public void GetAssetUrl_Returns_Null_When_Not_Required_And_No_Configurations_Specified()
+        {
+            var webpack = new Webpack(new WebpackConfig[0], _server.Object);
+            Assert.That(webpack.GetAssetUrl("any", "any", false), Is.Null);
+        }
+
+        [Test]
+        public void GetAssetUrl_Throws_When_No_Matching_Resource()
         {
             _config.AssetManifestPath = "~/scripts/manifest.json";
             SetupManifestFile(_config.AssetManifestPath, @"{ ""file"": { ""js"": ""file.js"" } }");
@@ -86,6 +93,18 @@ namespace Webpack.NET.Tests
             Assert.Throws<AssetNotFoundException>(() => webpack.GetAssetUrl("non-existant", "js"));
             Assert.Throws<AssetNotFoundException>(() => webpack.GetAssetUrl("file", "non-existant"));
             Assert.Throws<AssetNotFoundException>(() => webpack.GetAssetUrl("non-existant", "non-existant"));
+        }
+
+        [Test]
+        public void GetAssetUrl_Returns_Null_When_Not_Required_And_No_Matching_Resource()
+        {
+            _config.AssetManifestPath = "~/scripts/manifest.json";
+            SetupManifestFile(_config.AssetManifestPath, @"{ ""file"": { ""js"": ""file.js"" } }");
+
+            var webpack = new Webpack(new[] { _config }, _server.Object);
+            Assert.That(webpack.GetAssetUrl("non-existant", "js", false), Is.Null);
+            Assert.That(webpack.GetAssetUrl("file", "non-existant", false), Is.Null);
+            Assert.That(webpack.GetAssetUrl("non-existant", "non-existant", false), Is.Null);
         }
 
         private void SetupManifestFile(string manifestPath, string manifestContent)

@@ -24,8 +24,8 @@ namespace Webpack.NET.Tests
         {
             var urlHelper = SetupUrlHelper("http://server/");
             var webpack = new Mock<IWebpack>();
-            webpack.Setup(w => w.GetAssetUrl("asset-name", "ext")).Returns("/scripts/assets/asset.hash.js");
-            webpack.Setup(w => w.GetAssetUrl("asset-name-querystring", "ext")).Returns("/scripts/assets/asset.hash.js?i=1%2b1");
+            webpack.Setup(w => w.GetAssetUrl("asset-name", "ext", true)).Returns("/scripts/assets/asset.hash.js");
+            webpack.Setup(w => w.GetAssetUrl("asset-name-querystring", "ext", true)).Returns("/scripts/assets/asset.hash.js?i=1%2b1");
             urlHelper.RequestContext.HttpContext.Application.ConfigureWebpack(webpack.Object);
 
             Assert.That(urlHelper.WebpackAsset("asset-name", "ext"), Is.EqualTo("/scripts/assets/asset.hash.js"));

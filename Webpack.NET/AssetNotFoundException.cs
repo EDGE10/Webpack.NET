@@ -24,7 +24,7 @@ namespace Webpack.NET
         /// <param name="assetType">Type of the asset.</param>
         /// <param name="innerException">The inner exception.</param>
         public AssetNotFoundException(string assetName, string assetType, Exception innerException = null)
-            : base($"Asset {assetName} with type {assetType} could not be found.", innerException)
+            : base($"Asset '{assetName}' with type '{assetType}' could not be found.", innerException)
         { }
 
         /// <summary>
