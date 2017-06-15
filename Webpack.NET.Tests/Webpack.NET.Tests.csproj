@@ -78,6 +78,7 @@
     <Compile Include="MockHttpApplicationState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestConfigurationExtensions.cs" />
+    <Compile Include="TestHtmlHelperExtensions.cs" />
     <Compile Include="TestUrlHelperExtensions.cs" />
     <Compile Include="TestWebpack.cs" />
     <Compile Include="TestWebpackAssetsDictionary.cs" />
