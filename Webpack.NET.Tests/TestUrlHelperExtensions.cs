@@ -20,18 +20,48 @@ namespace Webpack.NET.Tests
         }
 
         [Test]
-        public void WebpackAsset_Gets_Expected_Url()
+        public void WebpackAsset_Throws_On_No_Matching_Resource()
+        {
+            var urlHelper = SetupUrlHelper("http://server/");
+            var webpack = new Mock<IWebpack>();
+            webpack.Setup(w => w.GetAssetUrl("non-existant", "non-existant", true)).Throws<AssetNotFoundException>();
+            urlHelper.RequestContext.HttpContext.Application.ConfigureWebpack(webpack.Object);
+
+            Assert.Throws<AssetNotFoundException>(() => urlHelper.WebpackAsset("non-existant", "non-existant"));
+            Assert.Throws<AssetNotFoundException>(() => urlHelper.AbsoluteWebpackAsset("non-existant", "non-existant"));
+        }
+
+        [Test]
+        public void WebpackAsset_Returns_Expected_Url()
         {
             var urlHelper = SetupUrlHelper("http://server/");
             var webpack = new Mock<IWebpack>();
             webpack.Setup(w => w.GetAssetUrl("asset-name", "ext", true)).Returns("/scripts/assets/asset.hash.js");
+            webpack.Setup(w => w.GetAssetUrl("asset-name", "ext", false)).Returns("/scripts/assets/asset.hash.js");
             webpack.Setup(w => w.GetAssetUrl("asset-name-querystring", "ext", true)).Returns("/scripts/assets/asset.hash.js?i=1%2b1");
+            webpack.Setup(w => w.GetAssetUrl("asset-name-querystring", "ext", false)).Returns("/scripts/assets/asset.hash.js?i=1%2b1");
             urlHelper.RequestContext.HttpContext.Application.ConfigureWebpack(webpack.Object);
 
             Assert.That(urlHelper.WebpackAsset("asset-name", "ext"), Is.EqualTo("/scripts/assets/asset.hash.js"));
+            Assert.That(urlHelper.WebpackAsset("asset-name", "ext", false), Is.EqualTo("/scripts/assets/asset.hash.js"));
             Assert.That(urlHelper.AbsoluteWebpackAsset("asset-name", "ext"), Is.EqualTo("http://server/scripts/assets/asset.hash.js"));
+            Assert.That(urlHelper.AbsoluteWebpackAsset("asset-name", "ext", false), Is.EqualTo("http://server/scripts/assets/asset.hash.js"));
             Assert.That(urlHelper.WebpackAsset("asset-name-querystring", "ext"), Is.EqualTo("/scripts/assets/asset.hash.js?i=1%2b1"));
+            Assert.That(urlHelper.WebpackAsset("asset-name-querystring", "ext", false), Is.EqualTo("/scripts/assets/asset.hash.js?i=1%2b1"));
             Assert.That(urlHelper.AbsoluteWebpackAsset("asset-name-querystring", "ext"), Is.EqualTo("http://server/scripts/assets/asset.hash.js?i=1%2b1"));
+            Assert.That(urlHelper.AbsoluteWebpackAsset("asset-name-querystring", "ext", false), Is.EqualTo("http://server/scripts/assets/asset.hash.js?i=1%2b1"));
+        }
+
+        [Test]
+        public void WebpackAsset_Returns_Null_When_Not_Required_And_No_Matching_Resource()
+        {
+            var urlHelper = SetupUrlHelper("http://server/");
+            var webpack = new Mock<IWebpack>();
+            webpack.Setup(w => w.GetAssetUrl("non-existant", "non-existant", false)).Returns((string)null);
+            urlHelper.RequestContext.HttpContext.Application.ConfigureWebpack(webpack.Object);
+
+            Assert.That(urlHelper.WebpackAsset("non-existant", "non-existant", false), Is.Null);
+            Assert.That(urlHelper.AbsoluteWebpackAsset("non-existant", "non-existant", false), Is.Null);
         }
 
         public static UrlHelper SetupUrlHelper(string baseUrl)

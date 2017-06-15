@@ -24,7 +24,9 @@ namespace Webpack.NET
             if (urlHelper == null) throw new ArgumentNullException(nameof(urlHelper));
 
             var webpack = urlHelper.RequestContext.HttpContext.Application.GetWebpack();
-            return urlHelper.Content(webpack.GetAssetUrl(assetName, assetType, required));
+            var assetUrl = webpack.GetAssetUrl(assetName, assetType, required);
+
+            return (assetUrl != null) ? urlHelper.Content(assetUrl) : null;
         }
 
         /// <summary>
@@ -43,7 +45,7 @@ namespace Webpack.NET
             if (urlHelper == null) throw new ArgumentNullException(nameof(urlHelper));
 
             var assetUrl = urlHelper.WebpackAsset(assetName, assetType, required);
-            return new Uri(urlHelper.RequestContext.HttpContext.Request.Url, assetUrl).AbsoluteUri;
+            return (assetUrl != null) ? new Uri(urlHelper.RequestContext.HttpContext.Request.Url, assetUrl).AbsoluteUri : null;
         }
     }
 }

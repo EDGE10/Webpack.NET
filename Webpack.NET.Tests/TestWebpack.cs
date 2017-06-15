@@ -70,7 +70,7 @@ namespace Webpack.NET.Tests
         }
 
         [Test]
-        public void GetAssetUrl_Throws_When_No_Configurations_Specified()
+        public void GetAssetUrl_Throws_On_No_Configurations_Specified()
         {
             var webpack = new Webpack(new WebpackConfig[0], _server.Object);
             Assert.Throws<AssetNotFoundException>(() => webpack.GetAssetUrl("any", "any"));
@@ -84,7 +84,7 @@ namespace Webpack.NET.Tests
         }
 
         [Test]
-        public void GetAssetUrl_Throws_When_No_Matching_Resource()
+        public void GetAssetUrl_Throws_On_No_Matching_Resource()
         {
             _config.AssetManifestPath = "~/scripts/manifest.json";
             SetupManifestFile(_config.AssetManifestPath, @"{ ""file"": { ""js"": ""file.js"" } }");
