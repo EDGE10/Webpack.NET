@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Webpack.NET.Tests")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Test project for Webpack.NET.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Webpack.NET.Tests")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright © Steve Greatrex")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

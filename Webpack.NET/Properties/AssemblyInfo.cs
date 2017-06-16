@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Webpack.NET")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Integrating webpack into ASP.NET MVC projects.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Webpack.NET")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright © Steve Greatrex")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
