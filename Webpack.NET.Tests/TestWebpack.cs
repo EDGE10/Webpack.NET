@@ -60,13 +60,19 @@ namespace Webpack.NET.Tests
         {
             var config1 = new WebpackConfig { AssetManifestPath = "~/scripts/manifest1.json", AssetOutputPath = "~/dist/1" };
             var config2 = new WebpackConfig { AssetManifestPath = "~/scripts/manifest2.json", AssetOutputPath = "~/dist/2" };
+            var config3 = new WebpackConfig { AssetManifestPath = "~/scripts/manifest3.json", AssetOutputPath = "" };
+            var config4 = new WebpackConfig { AssetManifestPath = "~/scripts/manifest4.json", AssetOutputPath = "~/dist/ignored" };
 
             SetupManifestFile(config1.AssetManifestPath, @"{ ""code"": { ""js"": ""file.1.js"" } }");
             SetupManifestFile(config2.AssetManifestPath, @"{ ""style"": { ""css"": ""file.2.css"" } }");
+            SetupManifestFile(config3.AssetManifestPath, @"{ ""file"": { ""js"": ""file.3.js"" } }");
+            SetupManifestFile(config4.AssetManifestPath, @"{ ""other"": { ""js"": ""http://server/file.4.js"" } }");
 
-            var webpack = new Webpack(new[] { config1, config2 }, _server.Object);
+            var webpack = new Webpack(new[] { config1, config2, config3, config4 }, _server.Object);
             Assert.That(webpack.GetAssetUrl("code", "js"), Is.EqualTo("~/dist/1/file.1.js"));
             Assert.That(webpack.GetAssetUrl("style", "css"), Is.EqualTo("~/dist/2/file.2.css"));
+            Assert.That(webpack.GetAssetUrl("file", "js"), Is.EqualTo("file.3.js"));
+            Assert.That(webpack.GetAssetUrl("other", "js"), Is.EqualTo("http://server/file.4.js"));
         }
 
         [Test]
